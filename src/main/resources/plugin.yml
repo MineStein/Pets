@@ -1,0 +1,19 @@
+name: Pets
+version: 1.0.0
+main: com.rowlingsrealm.pets.PetsPlugin
+
+description: Rowlings Realm armorstand-based pets system.
+authors: [Tyler Grissom]
+website: http://rowlingsrealm.com
+
+commands:
+  pets:
+    description: 'Pets command.'
+
+permissions:
+  rowlingsrealm.pets.*:
+    default: op
+    children:
+      rowlingsrealm.pets.reload: true
+  rowlingsrealm.pets.reload:
+    default: op

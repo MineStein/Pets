@@ -1,0 +1,47 @@
+item: DIAMOND_AXE
+pets:
+  - name: 'Niffler'
+    idle: '13'
+    interact: '14'
+    rideable: false
+    walk:
+      - '10'
+      - '11'
+      - '12'
+  - name: 'Bowtruckle'
+    idle: '32'
+    interact: '13'
+    rideable: false
+    walk:
+      - '23'
+      - '30'
+      - '31'
+  - name: 'Mooncalf'
+    idle: '28'
+    rideable: false
+    walk:
+      - '25'
+      - '26'
+      - '27'
+  - name: 'Demiguise'
+    idle: '37'
+    interact: '38'
+    rideable: false
+    walk:
+      - '34'
+      - '35'
+      - '36'
+  - name: 'Thunderbird Hatchling'
+    rideable: false
+    walk:
+      - '40'
+      - '41'
+      - '42'
+      - '43'
+  - name: 'House Elf'
+    idle: '46'
+    rideable: false
+    walk:
+      - '47'
+      - '48'
+      - '49'
