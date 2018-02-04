@@ -1,6 +1,7 @@
 item: DIAMOND_AXE
 pets:
   - name: 'Niffler'
+    permission: 'pet.niffler'
     idle: 13
     interact: 14
     rideable: false
@@ -10,6 +11,7 @@ pets:
       - 11
       - 12
   - name: 'Bowtruckle'
+    permission: 'pet.bowtruckle'
     idle: 32
     interact: 33
     rideable: false
@@ -19,6 +21,7 @@ pets:
       - 30
       - 31
   - name: 'Mooncalf'
+    permission: 'pet.mooncalf'
     idle: 28
     rideable: false
     shoulder: false
@@ -27,6 +30,7 @@ pets:
       - 26
       - 27
   - name: 'Demiguise'
+    permission: 'pet.demiguise'
     idle: 37
     interact: 38
     rideable: false
@@ -36,6 +40,7 @@ pets:
       - 35
       - 36
   - name: 'Thunderbird Hatchling'
+    permission: 'pet.thunderbirdhatchling'
     rideable: false
     shoulder: false
     walk:
@@ -44,6 +49,7 @@ pets:
       - 42
       - 43
   - name: 'House Elf'
+    permission: 'pet.houseelf'
     idle: 46
     rideable: false
     shoulder: false

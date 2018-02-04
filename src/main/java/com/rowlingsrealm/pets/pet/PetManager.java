@@ -2,6 +2,7 @@ package com.rowlingsrealm.pets.pet;
 
 import com.rowlingsrealm.pets.PetsPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -50,6 +51,8 @@ public class PetManager {
 
         List<String> names = new ArrayList<>();
 
+
+        // TODO implement CopyOnWriteArrayList as suggested by Spigot user as loop in loop is poor practice
         // Check for multiple registrations of the same pet name to avoid conflicts with Pet#getPet
         for (Pet pet : pets) {
             if (names.contains(pet.getName())) {
@@ -77,5 +80,11 @@ public class PetManager {
         }
 
         return null;
+    }
+
+    public boolean hasPet(Player player, Pet pet) {
+        if (pet.getPermission() == null) return true;
+
+        return player.hasPermission(pet.getPermission());
     }
 }

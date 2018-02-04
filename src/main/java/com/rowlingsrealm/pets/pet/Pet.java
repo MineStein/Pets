@@ -1,6 +1,7 @@
 package com.rowlingsrealm.pets.pet;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.permissions.Permission;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,12 +13,17 @@ import java.util.Map;
 public class Pet implements ConfigurationSerializable {
 
     private String name;
+    private Permission permission;
     private int idleFrame, interactFrame;
     private boolean rideable, shoulder;
     private List<Integer> walkFrames;
 
     public String getName() {
         return name;
+    }
+
+    public Permission getPermission() {
+        return permission;
     }
 
     public int getIdleFrame() {
@@ -40,8 +46,9 @@ public class Pet implements ConfigurationSerializable {
         return walkFrames;
     }
 
-    public Pet(String name, int idleFrame, int interactFrame, boolean rideable, boolean shoulder, List<Integer> walkFrames) {
+    public Pet(String name, String permission, int idleFrame, int interactFrame, boolean rideable, boolean shoulder, List<Integer> walkFrames) {
         this.name = name;
+        this.permission = new Permission(permission);
         this.idleFrame = idleFrame;
         this.interactFrame = interactFrame;
         this.rideable = rideable;
@@ -51,6 +58,7 @@ public class Pet implements ConfigurationSerializable {
 
     public Pet(Map<String, Object> map) {
         this.name = (String) map.get("name");
+        this.permission = new Permission((String) map.get("permission"));
         if (map.get("idle") != null) this.idleFrame = (int) map.get("idle");
         if (map.get("interact") != null) this.interactFrame = (int) map.get("interact");
         this.rideable = map.get("rideable") != null && (boolean) map.get("rideable");
@@ -70,6 +78,7 @@ public class Pet implements ConfigurationSerializable {
         Map<String, Object> map = new HashMap<>();
 
         map.put("name", name);
+        map.put("permission", permission.toString());
         map.put("idle", idleFrame);
         map.put("interact", interactFrame);
         map.put("rideable", rideable);
