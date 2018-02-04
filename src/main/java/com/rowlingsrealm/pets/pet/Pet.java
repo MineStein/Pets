@@ -1,6 +1,10 @@
 package com.rowlingsrealm.pets.pet;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 
 import java.util.HashMap;
@@ -86,5 +90,19 @@ public class Pet implements ConfigurationSerializable {
         map.put("walk", walkFrames);
 
         return map;
+    }
+
+    public ItemStack getIdleModel() {
+        ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE, 1, (short) getIdleFrame()); {
+            ItemMeta meta = item.getItemMeta();
+
+            meta.setDisplayName("§3" + getName());
+            meta.setUnbreakable(true);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
+
+            item.setItemMeta(meta);
+        }
+
+        return item;
     }
 }

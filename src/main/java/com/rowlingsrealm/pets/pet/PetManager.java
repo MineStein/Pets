@@ -1,8 +1,10 @@
 package com.rowlingsrealm.pets.pet;
 
 import com.rowlingsrealm.pets.PetsPlugin;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -53,6 +55,7 @@ public class PetManager {
 
 
         // TODO implement CopyOnWriteArrayList as suggested by Spigot user as loop in loop is poor practice
+        // TODO check for multiple frame registrations
         // Check for multiple registrations of the same pet name to avoid conflicts with Pet#getPet
         for (Pet pet : pets) {
             if (names.contains(pet.getName())) {
@@ -86,5 +89,23 @@ public class PetManager {
         if (pet.getPermission() == null) return true;
 
         return player.hasPermission(pet.getPermission());
+    }
+
+    public boolean isPetIdleFrame(ItemStack itemStack) {
+        for (Pet pet :
+                getLoadedPets()) {
+            if (pet.getName().equals(ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()))) return true;
+        }
+
+        return false;
+    }
+
+    public Pet getPetFromIdleFrame(int idleFrame) {
+        for (Pet pet :
+                getLoadedPets()) {
+            if (pet.getIdleFrame() == idleFrame) return pet;
+        }
+
+        return null;
     }
 }

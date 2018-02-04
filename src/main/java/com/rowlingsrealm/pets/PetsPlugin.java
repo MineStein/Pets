@@ -18,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class PetsPlugin extends JavaPlugin {
 
+    public static PetsPlugin instance;
     private PetsPlugin plugin;
     private PetManager petManager;
 
@@ -50,6 +51,7 @@ public class PetsPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        instance = this;
 
         getConfig().options().copyDefaults(true);
         saveConfig();

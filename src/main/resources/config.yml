@@ -1,4 +1,3 @@
-item: DIAMOND_AXE
 pets:
   - name: 'Niffler'
     permission: 'pet.niffler'
@@ -57,3 +56,8 @@ pets:
       - 47
       - 48
       - 49
+
+messages:
+  shoulder_equipped: '&8(&3&lPets&8) &7Your &3&l$pet &7now rests on your shoulder.'
+  no_swap: '&4&lX &cThat pet cannot leave your shoulder! Click it in your inventory to remove it.'
+  dequipped_pet: '&8(&3&lPets&8) &7Your &3&l$pet &7has been removed.'
