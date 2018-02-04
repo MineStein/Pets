@@ -27,13 +27,9 @@ public class PetsPlugin extends JavaPlugin {
     }
 
     public void reload() throws Exception {
-        try {
-            reloadConfig();
+        reloadConfig();
 
-            if (petManager != null) petManager.loadPets();
-        } catch (Exception exception) {
-            throw new Exception(exception);
-        }
+        if (petManager != null) petManager.loadPets();
     }
 
     private void registerCommand(String pets, CommandExecutor exec, TabCompleter tab) {

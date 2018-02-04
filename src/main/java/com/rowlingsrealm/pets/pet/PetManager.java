@@ -3,8 +3,7 @@ package com.rowlingsrealm.pets.pet;
 import com.rowlingsrealm.pets.PetsPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Copyright Tyler Grissom 2018
@@ -31,15 +30,19 @@ public class PetManager {
 
         FileConfiguration config = plugin.getConfig();
 
-        if (config.get("pets") instanceof List<?>) {
-            plugin.getLogger().warning("Incorrect pets type.");
+        List<Pet> pets = new ArrayList<>();
+        List<Map<?, ?>> maps = config.getMapList("pets");
 
-            return;
+        for (Map<?, ?> listItem :
+             maps) {
+            pets.add(new Pet((Map<String, Object>) listItem));
         }
 
-        List<Pet> pets = (ArrayList<Pet>) config.get("pets");
+        // TODO Null check maps
 
-        if (pets == null || pets.size() == 0) {
+        System.out.print(pets);
+
+        if (pets.size() == 0) {
             plugin.getLogger().warning("No pets configured!");
 
             return;
@@ -65,7 +68,7 @@ public class PetManager {
 
         loadedPets = pets;
 
-        plugin.getLogger().info(String.format("Loaded %b pets.", loadedPets.size()));
+        plugin.getLogger().info(String.format("Loaded %s pets.", String.valueOf(loadedPets.size())));
     }
 
     public Pet getPet(String name) {
