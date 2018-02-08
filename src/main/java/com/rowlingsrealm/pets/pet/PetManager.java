@@ -15,6 +15,7 @@ public class PetManager {
 
     private PetsPlugin plugin;
     private List<Pet> loadedPets;
+    private Map<UUID, EntityArmorStandCustom> following;
 
     public PetsPlugin getPlugin() {
         return plugin;
@@ -22,10 +23,15 @@ public class PetManager {
 
     public PetManager(PetsPlugin plugin) {
         this.plugin = plugin;
+        this.following = new HashMap<>();
     }
 
     public List<Pet> getLoadedPets() {
         return loadedPets;
+    }
+
+    public Map<UUID, EntityArmorStandCustom> getFollowing() {
+        return following;
     }
 
     public void loadPets() {
@@ -100,10 +106,10 @@ public class PetManager {
         return false;
     }
 
-    public Pet getPetFromIdleFrame(int idleFrame) {
+    public Pet getPetFromFrame(short frame) {
         for (Pet pet :
                 getLoadedPets()) {
-            if (pet.getIdleFrame() == idleFrame) return pet;
+            if (pet.getIdleFrame() == (int) frame || pet.getInteractFrame() == (int) frame || pet.getWalkFrames().contains((int) frame)) return pet;
         }
 
         return null;

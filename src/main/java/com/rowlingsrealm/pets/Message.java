@@ -13,7 +13,11 @@ public enum Message {
 
     SHOULDER_EQUIPPED,
     NO_SWAP,
-    DEQUIPPED_PET
+    DEQUIPPED_PET,
+    FOLLOWING_EQUIPPED,
+    DONT_OWN_PET,
+    ONLY_PLAYERS,
+    NO_PERMISSION
     ;
 
     public String get() {

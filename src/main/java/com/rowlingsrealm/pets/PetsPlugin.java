@@ -2,6 +2,7 @@ package com.rowlingsrealm.pets;
 
 import com.rowlingsrealm.pets.command.PetsCommand;
 import com.rowlingsrealm.pets.command.PetsTabCompleter;
+import com.rowlingsrealm.pets.listener.InteractListener;
 import com.rowlingsrealm.pets.listener.InventoryListener;
 import com.rowlingsrealm.pets.pet.Pet;
 import com.rowlingsrealm.pets.pet.PetManager;
@@ -72,7 +73,8 @@ public class PetsPlugin extends JavaPlugin {
 
         {
             registerListeners(
-                    new InventoryListener(this)
+                    new InventoryListener(this),
+                    new InteractListener(this)
             );
         }
     }

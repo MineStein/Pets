@@ -92,8 +92,8 @@ public class Pet implements ConfigurationSerializable {
         return map;
     }
 
-    public ItemStack getIdleModel() {
-        ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE, 1, (short) getIdleFrame()); {
+    private ItemStack getModel(short frame) {
+        ItemStack item = new ItemStack(Material.DIAMOND_PICKAXE, 1, frame); {
             ItemMeta meta = item.getItemMeta();
 
             meta.setDisplayName("§3" + getName());
@@ -104,5 +104,13 @@ public class Pet implements ConfigurationSerializable {
         }
 
         return item;
+    }
+
+    public ItemStack getIdleModel() {
+        return getModel((short) getIdleFrame());
+    }
+
+    public ItemStack getInteractModel() {
+        return getModel((short) getInteractFrame());
     }
 }

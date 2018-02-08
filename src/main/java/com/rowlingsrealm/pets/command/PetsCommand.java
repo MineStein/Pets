@@ -1,5 +1,6 @@
 package com.rowlingsrealm.pets.command;
 
+import com.rowlingsrealm.pets.Message;
 import com.rowlingsrealm.pets.PetsPlugin;
 import com.rowlingsrealm.pets.gui.PetsGui;
 import org.bukkit.command.Command;
@@ -29,7 +30,7 @@ public class PetsCommand extends CommandBase {
 
                 new PetsGui(plugin).open(player);
             } else {
-                sender.sendMessage("§cOnly players can do this.");
+                sender.sendMessage(Message.ONLY_PLAYERS.get());
             }
         } else {
             if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("rowlingsrealm.pets.reload")) {
@@ -43,7 +44,7 @@ public class PetsCommand extends CommandBase {
 
                 sender.sendMessage("§aReloaded Pets.");
             } else {
-                sender.sendMessage("§cYou don't have permission!");
+                sender.sendMessage(Message.NO_PERMISSION.get());
             }
         }
     }

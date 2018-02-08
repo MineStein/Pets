@@ -2,10 +2,18 @@ package com.rowlingsrealm.pets.listener;
 
 import com.rowlingsrealm.pets.Message;
 import com.rowlingsrealm.pets.PetsPlugin;
+import com.rowlingsrealm.pets.pet.EntityArmorStandCustom;
 import com.rowlingsrealm.pets.pet.Pet;
+import com.rowlingsrealm.pets.pet.PetManager;
+import net.minecraft.server.v1_12_R1.Entity;
+import net.minecraft.server.v1_12_R1.EnumItemSlot;
+import net.minecraft.server.v1_12_R1.PacketPlayOutEntityEquipment;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -84,7 +92,7 @@ public class InventoryListener implements Listener {
                 if (pet == null) return;
 
                 if (!player.hasPermission(pet.getPermission())) {
-                    player.sendMessage("§cYou don't own this pet! Purchase it at §4§lhttp://rowlingsrealm.com/store");
+                    player.sendMessage(Message.DONT_OWN_PET.get());
 
                     return;
                 }
@@ -105,6 +113,31 @@ public class InventoryListener implements Listener {
                     player.closeInventory();
 
                     player.sendMessage(Message.SHOULDER_EQUIPPED.get("pet", pet.getName()));
+                } else {
+                    PetManager pm = plugin.getPetManager();
+
+                    if (pm.getFollowing().containsKey(player.getUniqueId())) {
+                        Entity entity = pm.getFollowing().get(player.getUniqueId());
+
+                        entity.killEntity();
+
+                        pm.getFollowing().remove(player.getUniqueId());
+                    }
+
+                    EntityArmorStandCustom custom = EntityArmorStandCustom.SPAWN(player, pet);
+
+                    custom.setInvisible(true);
+
+                    PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(custom.getId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(pet.getIdleModel()));
+
+                    for (Player op :
+                            Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer) op).getHandle().playerConnection.sendPacket(packet);
+                    }
+
+                    pm.getFollowing().put(player.getUniqueId(), custom);
+
+                    player.sendMessage(Message.FOLLOWING_EQUIPPED.get("pet", pet.getName()));
                 }
             }
         }
