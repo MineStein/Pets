@@ -2,10 +2,12 @@ package com.rowlingsrealm.pets.pet;
 
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -19,6 +21,7 @@ public class EntityArmorStandCustom extends EntityArmorStand {
     // recommended
     public UUID player;
 
+    // TODO remove pet in constructor maybe?
     public EntityArmorStandCustom(World world, Player p, Pet pet) {
         super(world);
         player = p.getUniqueId();
@@ -29,25 +32,26 @@ public class EntityArmorStandCustom extends EntityArmorStand {
     // This is the update method of the entity
     @Override
     public void B_() {
-
-        // Getting the nms class of the player to have easier access to some
-        // data.
         EntityPlayer p = ((CraftPlayer) Bukkit.getPlayer(player)).getHandle();
-        // Setting the position
-        setPosition(p.locX, p.locY, p.locZ);
-        //Setting the yaw and pitch of the armor stand. If it fails we get another change to set it with the codes below.
-        this.yaw = p.yaw;
-        this.pitch = p.pitch;
-        // Setting the yaw of the armor stand. I don't know for sure if this
-        // works.
-        setBodyPose(new Vector3f(0.0F, p.yaw, 0.0F));
-        // Setting the pitch of the head. I also don't know for sure if this
-        // works.
-        setHeadPose(new Vector3f(p.pitch, 0.0F, 0.0F));
 
-        // If you want to still do the normal entity update instead of just
-        // standing totally still. Use this line.
-        // super.m();
+        tpToPlayer(Bukkit.getPlayer(player), this);
+        forceFace(p, this);
+
+        // super.m_();
+    }
+
+    public void forceFace(EntityPlayer p, Entity entity) {
+        float yaw = (float) Math.toDegrees(Math.atan2(p.locZ - entity.locZ, p.locX - entity.locX)) - 90;
+
+        p.setLocation(p.locX, p.locY, p.locZ, p.pitch, yaw);
+    }
+
+    public void tpToPlayer(Player toTPTo, EntityArmorStand a) {
+        Vector direction = toTPTo.getLocation().getDirection().multiply(new Vector(-1, 0, -1)).normalize();
+
+        Location loc = toTPTo.getLocation().add(direction);
+
+        a.setPosition(loc.getX(), loc.getY(), loc.getZ());
     }
 
     // This method has to be called to spawn a new instance of the armor stand.
@@ -56,7 +60,7 @@ public class EntityArmorStandCustom extends EntityArmorStand {
         net.minecraft.server.v1_12_R1.World w = ((CraftWorld) p.getWorld())
                 .getHandle();
         // Creating the new instance of the entity
-        EntityArmorStandCustom armorStand = new EntityArmorStandCustom(w, p, pet);
+        final EntityArmorStandCustom armorStand = new EntityArmorStandCustom(w, p, pet);
         // Adding the entity to the world
         w.addEntity(armorStand, SpawnReason.CUSTOM);
         armorStand.setLocation(p.getLocation().getX(), p.getLocation().getY(),
@@ -64,6 +68,7 @@ public class EntityArmorStandCustom extends EntityArmorStand {
                         .getLocation().getPitch());
         // Returning the armor stand instance. If you want to get the Bukkit api
         // for the entity you can use getEntity() method.
+
         return armorStand;
     }
 

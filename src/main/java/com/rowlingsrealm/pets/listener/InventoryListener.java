@@ -18,10 +18,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 
@@ -51,6 +53,23 @@ public class InventoryListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onInventoryCreativeClick(final InventoryCreativeEvent event) {
+        Bukkit.getScheduler().runTaskLater(plugin, new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (ItemStack item :
+                        event.getWhoClicked().getInventory()) {
+                    if (item == null || item.getItemMeta().getDisplayName() == null) continue;
+
+                    Pet pet = plugin.getPetManager().getPet(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
+
+                    if (pet != null) event.getWhoClicked().getInventory().remove(item);
+                }
+            }
+        }, 1);
+    }
+
     // TODO items can be glitched out by using number key or shift click. Make sure they don't have other stuff in their offhand and if so do appropriate moving around
     @EventHandler
     public void onOffhandClick(final InventoryClickEvent event) {
@@ -78,6 +97,22 @@ public class InventoryListener implements Listener {
         }
     }
 
+    private void checkOffhand(Player player) {
+        PetManager pm = plugin.getPetManager();
+
+        if (player.getInventory().getItemInOffHand() != null) {
+            ItemStack off = player.getInventory().getItemInOffHand();
+
+            if (off.getItemMeta() != null && off.getItemMeta().getDisplayName() != null) {
+                Pet p = pm.getPet(ChatColor.stripColor(off.getItemMeta().getDisplayName()));
+
+                if (p != null) {
+                    player.getInventory().setItemInOffHand(null);
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void onClick(final InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -98,6 +133,18 @@ public class InventoryListener implements Listener {
                 }
 
                 if (pet.isShoulder()) {
+                    PetManager pm = plugin.getPetManager();
+
+                    if (pm.getFollowing().containsKey(player.getUniqueId())) {
+                        Entity entity = pm.getFollowing().get(player.getUniqueId());
+
+                        entity.killEntity();
+
+                        pm.getFollowing().remove(player.getUniqueId());
+                    }
+
+                    checkOffhand(player);
+
                     ItemStack itemStack = pet.getIdleModel(); {
                         ItemMeta meta = itemStack.getItemMeta();
 
@@ -108,6 +155,8 @@ public class InventoryListener implements Listener {
 
                         itemStack.setItemMeta(meta);
                     }
+
+                    // TODO do item stuff if theres already something in their offhand
 
                     player.getInventory().setItemInOffHand(itemStack);
                     player.closeInventory();
@@ -124,6 +173,8 @@ public class InventoryListener implements Listener {
                         pm.getFollowing().remove(player.getUniqueId());
                     }
 
+                    checkOffhand(player);
+
                     EntityArmorStandCustom custom = EntityArmorStandCustom.SPAWN(player, pet);
 
                     custom.setInvisible(true);
@@ -138,6 +189,7 @@ public class InventoryListener implements Listener {
                     pm.getFollowing().put(player.getUniqueId(), custom);
 
                     player.sendMessage(Message.FOLLOWING_EQUIPPED.get("pet", pet.getName()));
+                    player.closeInventory();
                 }
             }
         }
