@@ -21,7 +21,6 @@ public class EntityArmorStandCustom extends EntityArmorStand {
     // recommended
     public UUID player;
 
-    // TODO remove pet in constructor maybe?
     public EntityArmorStandCustom(World world, Player p, Pet pet) {
         super(world);
         player = p.getUniqueId();

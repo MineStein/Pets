@@ -48,9 +48,8 @@ public class InteractListener implements Listener {
 
                 PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(pet.getInteractModel()));
 
-                // TODO loop through players in world instead
                 for (Player op :
-                        Bukkit.getOnlinePlayers()) {
+                        player.getWorld().getPlayers()) {
                     ((CraftPlayer) op).getHandle().playerConnection.sendPacket(packet);
                 }
 
