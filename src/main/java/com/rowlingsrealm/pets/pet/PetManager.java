@@ -46,11 +46,7 @@ public class PetManager {
              maps) {
             pets.add(new Pet((Map<String, Object>) listItem));
         }
-
-        // TODO Null check maps
-
-        System.out.print(pets);
-
+        
         if (pets.size() == 0) {
             plugin.getLogger().warning("No pets configured!");
 
