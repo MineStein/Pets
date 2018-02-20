@@ -39,7 +39,7 @@ public class EntityArmorStandCustom extends EntityArmorStand {
         // super.m_();
     }
 
-    public void forceFace(EntityPlayer p, Entity entity) {
+    public void forceFace(Entity p, Entity entity) {
         float yaw = (float) Math.toDegrees(Math.atan2(p.locZ - entity.locZ, p.locX - entity.locX)) - 90;
 
         p.setLocation(p.locX, p.locY, p.locZ, p.pitch, yaw);
@@ -51,6 +51,25 @@ public class EntityArmorStandCustom extends EntityArmorStand {
         Location loc = toTPTo.getLocation().add(direction);
 
         a.setPosition(loc.getX(), loc.getY(), loc.getZ());
+
+        double fx = locX, fy = locY, fz = locZ;
+        double tx = toTPTo.getLocation().getX(), ty = toTPTo.getLocation().getY(), tz = toTPTo.getLocation().getZ();
+
+        double x = tx - fx,
+                y = ty - fy,
+                z = tz - fz,
+                distXZ = Math.sqrt(x * x + z * z),
+                distY = Math.sqrt(distXZ * distXZ + y * y),
+                yaw = Math.toDegrees(Math.acos(x / distXZ)),
+                pitch = Math.toDegrees(Math.acos(y / distY)) - 90.0D;
+
+        if (z< 0.0D) {
+            yaw += Math.abs(180.0D - yaw) * 2.0D;
+        }
+
+        float newYaw = (float) yaw - 90.0F;
+
+        a.getBukkitEntity().getLocation().setYaw(newYaw);
     }
 
     // This method has to be called to spawn a new instance of the armor stand.

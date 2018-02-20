@@ -34,16 +34,18 @@ public class InteractListener implements Listener {
 
     @EventHandler
     public void onInteractArmorStand(final PlayerInteractAtEntityEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         if (event.getRightClicked().getType().equals(EntityType.ARMOR_STAND)) {
             final ArmorStand as = (ArmorStand) event.getRightClicked();
             PetManager petManager = plugin.getPetManager();
-            
+
             if (petManager.getFollowing().containsKey(player.getUniqueId())) {
                 ItemStack model = as.getItemInHand();
                 final Pet pet = petManager.getPetFromFrame(model.getDurability());
-                
+
+                if (pet.getInteractFrame() == 0 || pet.getIdleFrame() == pet.getInteractFrame()) return;
+
                 System.out.println(pet);
 
                 PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(pet.getInteractModel()));
@@ -56,7 +58,7 @@ public class InteractListener implements Listener {
                 Bukkit.getScheduler().runTaskLater(plugin, new BukkitRunnable() {
                     @Override
                     public void run() {
-                        PacketPlayOutEntityEquipment packet1 = new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(pet.getIdleModel()));
+                        PacketPlayOutEntityEquipment packet1 = new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(pet.getIdleModel(player)));
 
                         for (Player op :
                                 Bukkit.getOnlinePlayers()) {

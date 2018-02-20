@@ -28,7 +28,7 @@ public class PetsCommand extends CommandBase {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
 
-                new PetsGui(plugin).open(player);
+                new PetsGui(plugin, player).open(player);
             } else {
                 sender.sendMessage(Message.ONLY_PLAYERS.get());
             }

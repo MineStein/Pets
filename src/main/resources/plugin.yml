@@ -9,6 +9,7 @@ website: http://rowlingsrealm.com
 commands:
   pets:
     description: 'Pets command.'
+    aliases: [pet]
 
 permissions:
   rowlingsrealm.pets.*:

@@ -1,6 +1,7 @@
 pets:
   - name: 'Niffler'
     permission: 'pet.niffler'
+    description: 'A cute little coin-eating Niffler.'
     idle: 13
     interact: 14
     rideable: false
@@ -11,6 +12,7 @@ pets:
       - 12
   - name: 'Bowtruckle'
     permission: 'pet.bowtruckle'
+    description: 'A little twig-legged Bowtruckle to be your companion.'
     idle: 32
     interact: 33
     rideable: false
@@ -21,6 +23,7 @@ pets:
       - 31
   - name: 'Mooncalf'
     permission: 'pet.mooncalf'
+    description: 'A dancing moonlight companion.'
     idle: 28
     rideable: false
     shoulder: false
@@ -30,6 +33,7 @@ pets:
       - 27
   - name: 'Demiguise'
     permission: 'pet.demiguise'
+    description: 'A future-seeing, translucent creature.'
     idle: 37
     interact: 38
     rideable: false
@@ -40,6 +44,7 @@ pets:
       - 36
   - name: 'Thunderbird Hatchling'
     permission: 'pet.thunderbirdhatchling'
+    description: 'A beautiful bird, crackling with electricity.'
     rideable: false
     shoulder: false
     idle: 40
@@ -49,6 +54,7 @@ pets:
       - 43
   - name: 'House Elf'
     permission: 'pet.houseelf'
+    description: 'A wide-eyed creature indebted to your servitude.'
     idle: 46
     rideable: false
     shoulder: false
@@ -65,3 +71,4 @@ messages:
   dont_own_pet: "&4&lX &cYou don't own this pet! Purchase it at &3http://rowlingsrealm.com/store"
   only_players: '&4&lX &cOnly players can do that!'
   no_permission: '&4&lX &cYou do not have permission to do that!'
+  not_enabled: '&4&lX &cThis pet is coming soon!'

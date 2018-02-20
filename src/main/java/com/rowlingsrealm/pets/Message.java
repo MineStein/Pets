@@ -17,7 +17,8 @@ public enum Message {
     FOLLOWING_EQUIPPED,
     DONT_OWN_PET,
     ONLY_PLAYERS,
-    NO_PERMISSION
+    NO_PERMISSION,
+    NOT_ENABLED
     ;
 
     public String get() {

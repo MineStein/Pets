@@ -2,6 +2,7 @@ package com.rowlingsrealm.pets.pet;
 
 import com.rowlingsrealm.pets.PetsPlugin;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,7 +47,7 @@ public class PetManager {
              maps) {
             pets.add(new Pet((Map<String, Object>) listItem));
         }
-        
+
         if (pets.size() == 0) {
             plugin.getLogger().warning("No pets configured!");
 
@@ -96,6 +97,8 @@ public class PetManager {
     public boolean isPetIdleFrame(ItemStack itemStack) {
         for (Pet pet :
                 getLoadedPets()) {
+            if (itemStack == null || itemStack.getType().equals(Material.AIR) || itemStack.getData() == null || itemStack.getData().getData() == 0) continue;
+
             if (pet.getName().equals(ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()))) return true;
         }
 

@@ -6,6 +6,7 @@ import com.rowlingsrealm.pets.listener.InteractListener;
 import com.rowlingsrealm.pets.listener.InventoryListener;
 import com.rowlingsrealm.pets.pet.Pet;
 import com.rowlingsrealm.pets.pet.PetManager;
+import com.rowlingsrealm.pets.task.InventoryCheckTask;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
@@ -62,6 +63,8 @@ public class PetsPlugin extends JavaPlugin {
         petManager = new PetManager(this);
 
         petManager.loadPets();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new InventoryCheckTask(this), 0, 1);
 
         {
             registerCommand(

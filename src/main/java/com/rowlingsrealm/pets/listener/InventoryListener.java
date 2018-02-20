@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -43,14 +44,37 @@ public class InventoryListener implements Listener {
     }
 
     @EventHandler
+    public void onDrop(final PlayerDropItemEvent event) {
+        final Player player = event.getPlayer();
+
+        if (plugin.getPetManager().isPetIdleFrame(event.getItemDrop().getItemStack())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onSwap(final PlayerSwapHandItemsEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         if (plugin.getPetManager().isPetIdleFrame(event.getOffHandItem())) {
             event.setCancelled(true);
 
             player.sendMessage(Message.NO_SWAP.get());
         }
+
+        Bukkit.getScheduler().runTaskLater(plugin, new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (ItemStack item :
+                        player.getInventory()) {
+                    if (item == null || item.getItemMeta().getDisplayName() == null) continue;
+
+                    Pet pet = plugin.getPetManager().getPet(ChatColor.stripColor(item.getItemMeta().getDisplayName()));
+
+                    if (pet != null) player.getInventory().remove(item);
+                }
+            }
+        }, 1);
     }
 
     @EventHandler
@@ -128,6 +152,14 @@ public class InventoryListener implements Listener {
 
                 if (!player.hasPermission(pet.getPermission())) {
                     player.sendMessage(Message.DONT_OWN_PET.get());
+                    player.closeInventory();
+
+                    return;
+                }
+
+                if (!pet.isEnabled()) {
+                    player.sendMessage(Message.NOT_ENABLED.get());
+                    player.closeInventory();
 
                     return;
                 }
@@ -145,7 +177,7 @@ public class InventoryListener implements Listener {
 
                     checkOffhand(player);
 
-                    ItemStack itemStack = pet.getIdleModel(); {
+                    ItemStack itemStack = pet.getIdleModel(player); {
                         ItemMeta meta = itemStack.getItemMeta();
 
                         meta.setLore(Arrays.asList(
@@ -179,7 +211,7 @@ public class InventoryListener implements Listener {
 
                     custom.setInvisible(true);
 
-                    PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(custom.getId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(pet.getIdleModel()));
+                    PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(custom.getId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(pet.getIdleModel(player)));
 
                     for (Player op :
                             Bukkit.getOnlinePlayers()) {
