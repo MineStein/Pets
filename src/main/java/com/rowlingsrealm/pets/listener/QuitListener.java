@@ -35,7 +35,5 @@ public class QuitListener implements Listener {
 
             petManager.getFollowing().remove(player.getUniqueId());
         }
-
-
     }
 }

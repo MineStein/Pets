@@ -5,4 +5,4 @@ build:
   artifacts:
     name: "Pets"
     paths:
-      - "target/*.jar"
+    - "target/*.jar"
